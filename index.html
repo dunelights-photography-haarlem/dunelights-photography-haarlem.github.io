@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Niklas Beier Photography</title>
+<meta name="description" content="Portrait, event and lifestyle photography in Haarlem & Amsterdam.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  /* ============ FARBEN & SCHRIFTEN – hier anpassen ============ */
+  :root {
+    --bg: #f7f5f2;
+    --text: #1a1a1a;
+    --muted: #7a7672;
+    --line: #e2ded8;
+    --accent: #1a1a1a;
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --sans: 'Inter', -apple-system, sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--sans); font-weight: 300; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  img { display: block; width: 100%; height: auto; }
+  a { color: inherit; text-decoration: none; }
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+
+  /* ============ NAVIGATION ============ */
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 50; padding: 22px 0; transition: background .3s, padding .3s; }
+  nav.scrolled { background: rgba(247,245,242,.92); backdrop-filter: blur(10px); padding: 14px 0; border-bottom: 1px solid var(--line); }
+  nav .wrap { display: flex; justify-content: space-between; align-items: center; }
+  .logo { font-family: var(--serif); font-size: 1.5rem; letter-spacing: .02em; color: #fff; transition: color .3s; }
+  nav.scrolled .logo { color: var(--text); }
+  .links { display: flex; gap: 32px; list-style: none; }
+  .links a { font-size: .78rem; text-transform: uppercase; letter-spacing: .14em; color: #fff; transition: color .3s, opacity .2s; }
+  nav.scrolled .links a { color: var(--text); }
+  .links a:hover { opacity: .6; }
+  .burger { display: none; background: none; border: 0; cursor: pointer; width: 28px; height: 18px; position: relative; }
+  .burger span { position: absolute; left: 0; width: 100%; height: 1.5px; background: #fff; transition: .3s; }
+  nav.scrolled .burger span, nav.open .burger span { background: var(--text); }
+  .burger span:nth-child(1) { top: 0; } .burger span:nth-child(2) { top: 8px; } .burger span:nth-child(3) { top: 16px; }
+
+  /* ============ HERO ============ */
+  .hero { height: 100vh; min-height: 560px; position: relative; display: flex; align-items: flex-end; color: #fff; overflow: hidden; }
+  .hero img { position: absolute; inset: 0; height: 100%; object-fit: cover; animation: zoom 14s ease-out forwards; }
+  @keyframes zoom { from { transform: scale(1.08); } to { transform: scale(1); } }
+  .hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.55), rgba(0,0,0,.05) 60%); }
+  .hero .wrap { position: relative; z-index: 2; padding-bottom: 80px; width: 100%; }
+  .hero h1 { font-family: var(--serif); font-weight: 400; font-size: clamp(2.6rem, 7vw, 5.5rem); line-height: 1.02; max-width: 12ch; }
+  .hero p { margin-top: 18px; font-size: .85rem; text-transform: uppercase; letter-spacing: .2em; opacity: .9; }
+
+  /* ============ SECTIONS ============ */
+  section { padding: 120px 0; }
+  .label { font-size: .72rem; text-transform: uppercase; letter-spacing: .2em; color: var(--muted); margin-bottom: 16px; }
+  h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(2rem, 4.5vw, 3.2rem); line-height: 1.1; margin-bottom: 48px; }
+
+  /* ============ PORTFOLIO ============ */
+  .filters { display: flex; gap: 28px; flex-wrap: wrap; margin-bottom: 40px; }
+  .filters button { background: none; border: 0; font-family: var(--sans); font-size: .78rem; text-transform: uppercase; letter-spacing: .14em; color: var(--muted); cursor: pointer; padding-bottom: 4px; border-bottom: 1px solid transparent; transition: .2s; }
+  .filters button.active, .filters button:hover { color: var(--text); border-color: var(--text); }
+  .gallery { columns: 3; column-gap: 16px; }
+  .gallery figure { break-inside: avoid; margin-bottom: 16px; overflow: hidden; cursor: zoom-in; position: relative; }
+  .gallery figure img { transition: transform .7s ease, opacity .4s; }
+  .gallery figure:hover img { transform: scale(1.04); }
+  .gallery figure.hide { display: none; }
+
+  /* ============ ÜBER MICH ============ */
+  .about { display: grid; grid-template-columns: 1fr 1.1fr; gap: 80px; align-items: center; }
+  .about img { aspect-ratio: 4/5; object-fit: cover; }
+  .about p { font-size: 1.05rem; color: #3a3836; margin-bottom: 18px; max-width: 52ch; }
+  .about h2 { margin-bottom: 28px; }
+
+  /* ============ PAKETE ============ */
+  #packages { background: #fff; }
+  .packages { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .pkg { background: #fff; padding: 48px 36px; display: flex; flex-direction: column; }
+  .pkg h3 { font-family: var(--serif); font-weight: 400; font-size: 1.8rem; margin-bottom: 6px; }
+  .price { font-size: .85rem; letter-spacing: .1em; color: var(--muted); margin-bottom: 28px; }
+  .pkg ul { list-style: none; flex: 1; }
+  .pkg li { padding: 10px 0; border-bottom: 1px solid var(--line); font-size: .92rem; }
+  .pkg li:last-child { border: 0; }
+  .btn { display: inline-block; margin-top: 32px; padding: 14px 28px; border: 1px solid var(--text); font-size: .74rem; text-transform: uppercase; letter-spacing: .16em; text-align: center; transition: .25s; cursor: pointer; background: none; font-family: var(--sans); color: var(--text); }
+  .btn:hover, .btn.dark { background: var(--text); color: #fff; }
+  .btn.dark:hover { background: none; color: var(--text); }
+
+  /* ============ KONTAKT ============ */
+  .contact { display: grid; grid-template-columns: 1fr 1.2fr; gap: 80px; }
+  .contact-info p { margin-bottom: 10px; }
+  .contact-info a { border-bottom: 1px solid var(--line); transition: border-color .2s; }
+  .contact-info a:hover { border-color: var(--text); }
+  form { display: grid; gap: 22px; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+  input, select, textarea { width: 100%; background: transparent; border: 0; border-bottom: 1px solid #c9c4bd; padding: 12px 0; font-family: var(--sans); font-size: .95rem; font-weight: 300; color: var(--text); outline: none; transition: border-color .2s; border-radius: 0; }
+  input:focus, select:focus, textarea:focus { border-color: var(--text); }
+  textarea { resize: vertical; min-height: 110px; }
+
+  footer { padding: 40px 0; border-top: 1px solid var(--line); font-size: .78rem; color: var(--muted); }
+  footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+
+  /* ============ LIGHTBOX ============ */
+  .lightbox { position: fixed; inset: 0; background: rgba(15,15,15,.96); z-index: 100; display: none; align-items: center; justify-content: center; }
+  .lightbox.show { display: flex; }
+  .lightbox img { max-width: 90vw; max-height: 86vh; width: auto; object-fit: contain; }
+  .lb-btn { position: absolute; background: none; border: 0; color: #fff; font-size: 2rem; cursor: pointer; padding: 20px; opacity: .7; transition: opacity .2s; font-family: var(--sans); font-weight: 200; }
+  .lb-btn:hover { opacity: 1; }
+  .lb-close { top: 10px; right: 16px; }
+  .lb-prev { left: 10px; top: 50%; transform: translateY(-50%); }
+  .lb-next { right: 10px; top: 50%; transform: translateY(-50%); }
+
+  /* Einblend-Animation */
+  .fade { opacity: 0; transform: translateY(24px); transition: opacity .9s ease, transform .9s ease; }
+  .fade.in { opacity: 1; transform: none; }
+
+  /* ============ HANDY ============ */
+  @media (max-width: 900px) {
+    .gallery { columns: 2; column-gap: 10px; }
+    .gallery figure { margin-bottom: 10px; }
+    .about, .contact { grid-template-columns: 1fr; gap: 48px; }
+    .packages { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 700px) {
+    .wrap { padding: 0 16px; }
+    section { padding: 80px 0; }
+    .burger { display: block; }
+    .links { position: fixed; inset: 0; background: var(--bg); flex-direction: column; align-items: center; justify-content: center; gap: 36px; opacity: 0; pointer-events: none; transition: opacity .3s; }
+    .links a { color: var(--text) !important; font-size: 1rem; }
+    nav.open .links { opacity: 1; pointer-events: auto; }
+    nav.open .logo { color: var(--text); position: relative; z-index: 2; }
+    .burger { z-index: 2; }
+    nav.open .burger span:nth-child(1) { top: 8px; transform: rotate(45deg); }
+    nav.open .burger span:nth-child(2) { opacity: 0; }
+    nav.open .burger span:nth-child(3) { top: 8px; transform: rotate(-45deg); }
+    .hero .wrap { padding-bottom: 56px; }
+    .row { grid-template-columns: 1fr; }
+    .lb-prev, .lb-next { top: auto; bottom: 20px; transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= NAVIGATION ================= -->
+<nav id="nav">
+  <div class="wrap">
+    <a href="#" class="logo">Niklas Beier</a>
+    <ul class="links">
+      <li><a href="#portfolio">Portfolio</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#packages">Packages</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- ================= HERO =================
+     Bild tauschen: src="images/hero.jpg" -->
+<header class="hero">
+  <img src="https://picsum.photos/seed/heroshot/2000/1300" alt="Photography by Niklas Beier">
+  <div class="wrap">
+    <h1>Moments, honestly captured.</h1>
+    <p>Portrait &amp; Event Photography · Haarlem &amp; Amsterdam</p>
+  </div>
+</header>
+
+<!-- ================= PORTFOLIO =================
+     Jedes Bild: <figure data-cat="portrait|events|lifestyle"><img src="images/DATEI.jpg" alt="..."></figure>
+     Einfach Zeilen kopieren, löschen oder ändern. -->
+<section id="portfolio">
+  <div class="wrap">
+    <p class="label">Selected work</p>
+    <h2>Portfolio</h2>
+    <div class="filters">
+      <button class="active" data-filter="all">All</button>
+      <button data-filter="portrait">Portrait</button>
+      <button data-filter="events">Events</button>
+      <button data-filter="lifestyle">Lifestyle</button>
+    </div>
+    <div class="gallery">
+      <figure data-cat="portrait"><img loading="lazy" src="https://picsum.photos/seed/p1/800/1000" alt="Portrait"></figure>
+      <figure data-cat="lifestyle"><img loading="lazy" src="https://picsum.photos/seed/l1/800/600" alt="Lifestyle"></figure>
+      <figure data-cat="events"><img loading="lazy" src="https://picsum.photos/seed/e1/800/1100" alt="Event"></figure>
+      <figure data-cat="portrait"><img loading="lazy" src="https://picsum.photos/seed/p2/800/600" alt="Portrait"></figure>
+      <figure data-cat="events"><img loading="lazy" src="https://picsum.photos/seed/e2/800/1000" alt="Event"></figure>
+      <figure data-cat="lifestyle"><img loading="lazy" src="https://picsum.photos/seed/l2/800/1100" alt="Lifestyle"></figure>
+      <figure data-cat="portrait"><img loading="lazy" src="https://picsum.photos/seed/p3/800/1050" alt="Portrait"></figure>
+      <figure data-cat="events"><img loading="lazy" src="https://picsum.photos/seed/e3/800/600" alt="Event"></figure>
+      <figure data-cat="lifestyle"><img loading="lazy" src="https://picsum.photos/seed/l3/800/1000" alt="Lifestyle"></figure>
+      <figure data-cat="portrait"><img loading="lazy" src="https://picsum.photos/seed/p4/800/600" alt="Portrait"></figure>
+      <figure data-cat="events"><img loading="lazy" src="https://picsum.photos/seed/e4/800/1050" alt="Event"></figure>
+      <figure data-cat="lifestyle"><img loading="lazy" src="https://picsum.photos/seed/l4/800/600" alt="Lifestyle"></figure>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ÜBER MICH ================= -->
+<section id="about">
+  <div class="wrap about">
+    <img class="fade" loading="lazy" src="https://picsum.photos/seed/aboutme/900/1125" alt="Niklas Beier">
+    <div class="fade">
+      <p class="label">About</p>
+      <h2>Hi, I'm Niklas.</h2>
+      <p>I'm a photographer based in Haarlem, working across Haarlem and Amsterdam. I love natural light, real emotions and images that feel like you, not like a pose.</p>
+      <p>Whether it's a portrait session, your event or content for your brand, I keep shoots relaxed and easy, so you can just be yourself.</p>
+      <a href="#contact" class="btn">Let's work together</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PAKETE / PREISE =================
+     Preise und Inhalte hier anpassen -->
+<section id="packages">
+  <div class="wrap">
+    <p class="label">Packages</p>
+    <h2>Simple, clear pricing</h2>
+    <div class="packages">
+      <div class="pkg fade">
+        <h3>Mini</h3>
+        <p class="price">FROM €79</p>
+        <ul>
+          <li>30-minute session</li>
+          <li>1 location</li>
+          <li>10 edited photos</li>
+          <li>Online gallery within 7 days</li>
+        </ul>
+        <a href="#contact" class="btn">Book</a>
+      </div>
+      <div class="pkg fade">
+        <h3>Portrait</h3>
+        <p class="price">FROM €149</p>
+        <ul>
+          <li>60-minute session</li>
+          <li>Up to 2 locations</li>
+          <li>25 edited photos</li>
+          <li>Outfit change included</li>
+        </ul>
+        <a href="#contact" class="btn dark">Book</a>
+      </div>
+      <div class="pkg fade">
+        <h3>Event</h3>
+        <p class="price">FROM €249</p>
+        <ul>
+          <li>Up to 3 hours coverage</li>
+          <li>Birthdays, parties, company events</li>
+          <li>60+ edited photos</li>
+          <li>Delivery within 10 days</li>
+        </ul>
+        <a href="#contact" class="btn">Request</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= KONTAKT =================
+     E-Mail und Instagram unten ersetzen -->
+<section id="contact">
+  <div class="wrap contact">
+    <div class="contact-info fade">
+      <p class="label">Contact</p>
+      <h2>Let's create something together.</h2>
+      <p><a href="mailto:hello@example.com">hello@example.com</a></p>
+      <p><a href="https://instagram.com/" target="_blank" rel="noopener">@yourinstagram</a></p>
+      <p style="color:var(--muted);margin-top:20px">Haarlem · Amsterdam · Netherlands</p>
+    </div>
+    <form id="form" class="fade">
+      <div class="row">
+        <input name="name" placeholder="Name" required>
+        <input name="email" type="email" placeholder="Email" required>
+      </div>
+      <div class="row">
+        <select name="type">
+          <option>Portrait</option>
+          <option>Event</option>
+          <option>Lifestyle / Brand</option>
+          <option>Other</option>
+        </select>
+        <input name="date" placeholder="Preferred date">
+      </div>
+      <textarea name="message" placeholder="Tell me about your idea"></textarea>
+      <div><button class="btn dark" type="submit">Send request</button></div>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="year"></span> Niklas Beier Photography</span>
+    <span>Haarlem, NL</span>
+  </div>
+</footer>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lb">
+  <button class="lb-btn lb-close" aria-label="Close">×</button>
+  <button class="lb-btn lb-prev" aria-label="Previous">‹</button>
+  <img src="" alt="">
+  <button class="lb-btn lb-next" aria-label="Next">›</button>
+</div>
+
+<script>
+  // ===== Deine E-Mail für das Formular =====
+  const MY_EMAIL = 'hello@example.com';
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Navigation beim Scrollen
+  const nav = document.getElementById('nav');
+  addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 60));
+  document.querySelector('.burger').onclick = () => nav.classList.toggle('open');
+  document.querySelectorAll('.links a').forEach(a => a.onclick = () => nav.classList.remove('open'));
+
+  // Filter
+  const figs = [...document.querySelectorAll('.gallery figure')];
+  document.querySelectorAll('.filters button').forEach(btn => {
+    btn.onclick = () => {
+      document.querySelector('.filters .active').classList.remove('active');
+      btn.classList.add('active');
+      const f = btn.dataset.filter;
+      figs.forEach(fig => fig.classList.toggle('hide', f !== 'all' && fig.dataset.cat !== f));
+    };
+  });
+
+  // Lightbox
+  const lb = document.getElementById('lb'), lbImg = lb.querySelector('img');
+  let idx = 0;
+  const visible = () => figs.filter(f => !f.classList.contains('hide'));
+  const show = i => { const v = visible(); idx = (i + v.length) % v.length; lbImg.src = v[idx].querySelector('img').src; };
+  figs.forEach(f => f.onclick = () => { show(visible().indexOf(f)); lb.classList.add('show'); document.body.style.overflow = 'hidden'; });
+  const close = () => { lb.classList.remove('show'); document.body.style.overflow = ''; };
+  lb.querySelector('.lb-close').onclick = close;
+  lb.querySelector('.lb-prev').onclick = e => { e.stopPropagation(); show(idx - 1); };
+  lb.querySelector('.lb-next').onclick = e => { e.stopPropagation(); show(idx + 1); };
+  lb.onclick = e => { if (e.target === lb) close(); };
+  addEventListener('keydown', e => {
+    if (!lb.classList.contains('show')) return;
+    if (e.key === 'Escape') close();
+    if (e.key === 'ArrowLeft') show(idx - 1);
+    if (e.key === 'ArrowRight') show(idx + 1);
+  });
+
+  // Einblenden beim Scrollen
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .15 });
+  document.querySelectorAll('.fade').forEach(el => io.observe(el));
+
+  // Formular öffnet das E-Mail-Programm (funktioniert ohne Server, ideal für GitHub Pages)
+  document.getElementById('form').onsubmit = e => {
+    e.preventDefault();
+    const d = new FormData(e.target);
+    const body = `Name: ${d.get('name')}\nEmail: ${d.get('email')}\nType: ${d.get('type')}\nDate: ${d.get('date')}\n\n${d.get('message')}`;
+    location.href = `mailto:${MY_EMAIL}?subject=${encodeURIComponent('Photo request – ' + d.get('type'))}&body=${encodeURIComponent(body)}`;
+  };
+</script>
+</body>
+</html>
