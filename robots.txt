@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://niklasbeierphoto.github.io/sitemap.xml
+Sitemap: https://dunelights-photography-haarlem.github.io/sitemap.xml
